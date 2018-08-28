@@ -264,6 +264,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AppUserController.cs" />
     <Compile Include="Controllers\CarController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\DriveController.cs" />
     <Compile Include="Controllers\DriverController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -277,9 +278,9 @@
     <Compile Include="Migrations\201806031439020_Initial.Designer.cs">
       <DependentUpon>201806031439020_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201808231624235_initial2.cs" />
-    <Compile Include="Migrations\201808231624235_initial2.Designer.cs">
-      <DependentUpon>201808231624235_initial2.cs</DependentUpon>
+    <Compile Include="Migrations\201808281618436_update1.cs" />
+    <Compile Include="Migrations\201808281618436_update1.Designer.cs">
+      <DependentUpon>201808281618436_update1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -378,8 +379,8 @@
     <EmbeddedResource Include="Migrations\201806031439020_Initial.resx">
       <DependentUpon>201806031439020_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808231624235_initial2.resx">
-      <DependentUpon>201808231624235_initial2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201808281618436_update1.resx">
+      <DependentUpon>201808281618436_update1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

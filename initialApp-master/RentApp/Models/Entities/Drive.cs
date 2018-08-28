@@ -26,9 +26,11 @@ namespace RentApp.Models.Entities
         public DateTime Date { get; set; }
         public CarTypeEnum CarType { get; set; } 
         public float Price { get; set; }
-        //public Comment Comment { get; set; } //TODO: Check the ForeingKey.
         public RideStatus Status { get; set; }
 
+        [ForeignKey("Comment")]
+        public int? CommentId { get; set; }
+        public Comment Comment { get; set; }
         [ForeignKey("Origin")]
         public int? OriginId { get; set; }
         public Location Origin { get; set; }

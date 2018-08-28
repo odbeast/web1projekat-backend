@@ -124,5 +124,89 @@ namespace RentApp.Controllers
 
             return Ok(user);
         }
+
+        [HttpPost]
+        [Route("ChangeDriver")]
+        [ResponseType(typeof(Driver))]
+        public IHttpActionResult ChangeDriver(Driver driver)
+        {
+            RAIdentityUser RAuser2change = db.Users
+                           .Where(b => b.UserName == driver.Username)
+                           .FirstOrDefault();
+
+            if (RAuser2change == null)
+            {
+                return NotFound();
+            }
+
+            Driver driver2change = (Driver)db.AppUsers
+                           .Where(b => b.Id == RAuser2change.AppUserId)
+                           .FirstOrDefault();
+
+            if (driver2change == null)
+            {
+                return NotFound();
+            }
+
+
+            driver2change.ContactNumber = driver.ContactNumber;
+            driver2change.DriveType = driver.DriveType;
+            driver2change.Email = driver.Email;
+            driver2change.FullName = driver.FullName;
+            driver2change.Gender = driver.Gender;
+            driver2change.DriveType = driver.DriveType;
+            driver2change.LocationId = driver.LocationId;
+            driver2change.CarId = driver.CarId;
+            RAuser2change.PasswordHash = RAIdentityUser.HashPassword(driver.PasswordLogin);
+
+            try
+            {
+                db.Entry(driver2change).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException)
+            {
+                return BadRequest(ModelState);
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(driver2change);
+        }
+
+        [HttpGet]
+        [Route("TakeDrive/{driverId}/{id}")]
+        [ResponseType(typeof(Drive))]
+        public IHttpActionResult TakeDrive(int driverId, int id)
+        {
+            Drive drive = db.Drives
+                           .Where(b => b.Id == id)
+                           .FirstOrDefault();
+            if (drive == null)
+            {
+                return NotFound();
+            }
+
+            drive.DriverId = driverId;
+            drive.Status = RideStatus.Accepted;
+
+            try
+            {
+                db.Entry(drive).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException)
+            {
+                return BadRequest(ModelState);
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(drive);
+        }
     }
 }

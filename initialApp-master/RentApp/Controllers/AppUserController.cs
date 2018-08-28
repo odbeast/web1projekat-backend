@@ -81,6 +81,7 @@ namespace RentApp.Controllers
             user2change.Email = user.Email;
             user2change.FullName = user.FullName;
             user2change.Gender = user.Gender;
+            user2change.DriveType = user.DriveType;
             RAuser2change.PasswordHash = RAIdentityUser.HashPassword(user.Password);
 
             try
