@@ -31,6 +31,7 @@ namespace RentApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Driver")]
         [ResponseType(typeof(Comment))]
         [Route("AddComment")]
         public IHttpActionResult AddComment()

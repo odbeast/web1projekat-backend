@@ -88,9 +88,7 @@ namespace RentApp.Controllers
         [ResponseType(typeof(Drive))]
         public IHttpActionResult GetDrivesByStatus(string status)
         {
-            RideStatus Status;
-            Enum.TryParse(status, out Status);
-            var drives = db.Drives.Where(d => d.Status == Status);
+            var drives = db.Drives.Where(d => d.Status == status);
 
             if (drives == null)
             {
@@ -100,6 +98,7 @@ namespace RentApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ResponseType(typeof(Drive))]
         [Route("AddDrive")]
         public IHttpActionResult AddDrive()
@@ -115,6 +114,15 @@ namespace RentApp.Controllers
             try
             {
                 drive = JsonConvert.DeserializeObject<Drive>(httpRequest.Form[0]);
+                if(drive.DriverId != null)
+                {
+                    Driver user = (Driver)db.AppUsers
+                               .Where(b => b.Id == drive.DriverId)
+                               .FirstOrDefault();
+
+                    user.Available = false;
+                    db.Entry(user).State = EntityState.Modified;
+                }
             }
             catch (JsonSerializationException)
             {
@@ -125,6 +133,7 @@ namespace RentApp.Controllers
 
             try
             {
+                
                 db.SaveChanges();
             }
             catch (DbEntityValidationException)
@@ -141,6 +150,7 @@ namespace RentApp.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Driver")]
         [Route("ChangeStatus/{id}/{status}")]
         [ResponseType(typeof(Drive))]
         public IHttpActionResult ChangeStatus(int id, string status)
@@ -149,14 +159,22 @@ namespace RentApp.Controllers
                           .Where(b => b.Id == id)
                           .FirstOrDefault();
 
+            if (drive.DriverId != null)
+            {
+                Driver user = (Driver)db.AppUsers
+                           .Where(b => b.Id == drive.DriverId)
+                           .FirstOrDefault();
+
+                user.Available = true;
+                db.Entry(user).State = EntityState.Modified;
+            }
+
             if (drive == null)
             {
                 return NotFound();
             }
 
-            RideStatus myStatus;
-            Enum.TryParse(status, out myStatus);
-            drive.Status = myStatus;
+            drive.Status = status;
 
             try
             {
@@ -176,6 +194,7 @@ namespace RentApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Driver")]
         [Route("ChangePriceDestination/{id}/{price}/{destinationId}")]
         [ResponseType(typeof(Drive))]
         public IHttpActionResult ChangePriceDestination(int id, int price, int destinationId)
@@ -230,7 +249,21 @@ namespace RentApp.Controllers
         [ResponseType(typeof(Drive))]
         public IHttpActionResult SearchByPrice(int price1, int price2)
         {
-            var drives = db.Drives.Where(d => d.Price >= price1 && d.Price <= price2);
+            List<int> ids = new List<int>();
+            IQueryable<Drive> drives;
+
+            if (price1 == -1)
+            {
+                drives = db.Drives.Where(d => d.Price <= price2);
+            }
+            else if (price2 == -1)
+            {
+                drives = db.Drives.Where(d => d.Price >= price1);
+            }
+            else
+            {
+                drives = db.Drives.Where(d => d.Price >= price1 && d.Price <= price2);
+            }
 
             if (drives == null)
             {
@@ -245,7 +278,19 @@ namespace RentApp.Controllers
         public IHttpActionResult SearchByGrade(int grade1, int grade2)
         {
             List<int> ids = new List<int>();
-            var comments = db.Comments.Where(c => c.Grade >= grade1 && c.Grade <= grade2);
+            IQueryable<Comment> comments;
+            if(grade1 == -1)
+            {
+                comments = db.Comments.Where(c => c.Grade <= grade2);
+            }
+            else if(grade2 == -1)
+            {
+                comments = db.Comments.Where(c => c.Grade >= grade1);
+            }
+            else
+            {
+                comments = db.Comments.Where(c => c.Grade >= grade1 && c.Grade <= grade2);
+            }
             foreach (Comment c in comments)
             {
                 ids.Add(c.DriveId);

@@ -31,6 +31,7 @@ namespace RentApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ResponseType(typeof(Location))]
         [Route("AddLocation")]
         public IHttpActionResult AddLocation()

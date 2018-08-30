@@ -15,7 +15,7 @@ namespace RentApp.Models.Entities
         public int CarYear { get; set; }
         public string Registration { get; set; }
         public int TaxiNumber { get; set; }
-        public CarTypeEnum CarType { get; set; }
+        public string CarType { get; set; }
 
         [ForeignKey("Driver")]
         public int? DriverId { get; set; }

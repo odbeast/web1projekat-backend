@@ -17,5 +17,6 @@ namespace RentApp.Models.Entities
         public Location Location { get; set; }
 
         public string PasswordLogin { get; set; }
+        public bool? Available { get; set; }
     }
 }

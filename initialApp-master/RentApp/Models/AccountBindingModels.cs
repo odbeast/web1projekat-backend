@@ -63,10 +63,10 @@ namespace RentApp.Models
         public string ConfirmPassword { get; set; }
 
         [Required]
-        public Gender Gender { get; set; }
+        public string Gender { get; set; }
 
         [Required]
-        public DriveType DriveType { get; set; }
+        public string DriveType { get; set; }
 
         [Required]
         public string ContactNumber { get; set; }

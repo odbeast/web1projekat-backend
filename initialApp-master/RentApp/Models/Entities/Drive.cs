@@ -24,9 +24,9 @@ namespace RentApp.Models.Entities
 
         [Column("Date", TypeName = "datetime2")]
         public DateTime Date { get; set; }
-        public CarTypeEnum CarType { get; set; } 
+        public string CarType { get; set; } 
         public float Price { get; set; }
-        public RideStatus Status { get; set; }
+        public string Status { get; set; }
 
         [ForeignKey("Comment")]
         public int? CommentId { get; set; }

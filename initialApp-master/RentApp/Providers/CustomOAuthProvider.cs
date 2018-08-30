@@ -26,9 +26,9 @@ namespace RentApp.Providers
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
 
-            var allowedOrigin = "*";
+            //var allowedOrigin = "*";
 
-            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
+            //context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             ApplicationUserManager userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 

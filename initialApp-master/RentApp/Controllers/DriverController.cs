@@ -29,10 +29,31 @@ namespace RentApp.Controllers
             db = context as RADBContext;
         }
 
+        [Route("GetDrivers")]
         public IQueryable<AppUser> GetDrivers()
         {
             return db.AppUsers.Where(o => o.Role == Role.Driver.ToString());
+
         }
+
+        [Route("GetAvailableDrivers")]
+        public IQueryable<AppUser> GetAvailableDrivers()
+        {
+            List<int> availableDriversIds = new List<int>();
+            foreach(AppUser d in db.AppUsers)
+            {
+                if((d as Driver) != null)
+                {
+                    if ((d as Driver).Available == true)
+                    {
+                        availableDriversIds.Add(d.Id);
+                    }
+                }
+            }
+
+            return db.AppUsers.Where(u => availableDriversIds.Contains(u.Id));
+        }
+
 
         [HttpGet]
         [Route("GetDriver/{username}")]
@@ -51,6 +72,7 @@ namespace RentApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ResponseType(typeof(Driver))]
         [Route("AddDriver")]
         public async Task<IHttpActionResult> AddDriver()
@@ -94,6 +116,7 @@ namespace RentApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Driver")]
         [Route("ChangeLocation/{username}/{locationId}")]
         [ResponseType(typeof(AppUser))]
         public IHttpActionResult ChangeLocation(string username, int locationId)
@@ -127,6 +150,7 @@ namespace RentApp.Controllers
 
         [HttpPost]
         [Route("ChangeDriver")]
+        [Authorize(Roles = "Driver")]
         [ResponseType(typeof(Driver))]
         public IHttpActionResult ChangeDriver(Driver driver)
         {
@@ -177,6 +201,7 @@ namespace RentApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Driver")]
         [Route("TakeDrive/{driverId}/{id}")]
         [ResponseType(typeof(Drive))]
         public IHttpActionResult TakeDrive(int driverId, int id)
@@ -190,11 +215,17 @@ namespace RentApp.Controllers
             }
 
             drive.DriverId = driverId;
-            drive.Status = RideStatus.Accepted;
+            drive.Status = "Accepted";
+
+            Driver driver = (Driver)db.AppUsers
+                    .Where(b => b.Id == driverId)
+                           .FirstOrDefault();
+            driver.Available = false;
 
             try
             {
                 db.Entry(drive).State = EntityState.Modified;
+                db.Entry(driver).State = EntityState.Modified;
                 db.SaveChanges();
             }
             catch (DbEntityValidationException)

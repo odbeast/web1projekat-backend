@@ -31,6 +31,7 @@ namespace RentApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ResponseType(typeof(Car))]
         [Route("AddCar")]
         public IHttpActionResult AddCar()

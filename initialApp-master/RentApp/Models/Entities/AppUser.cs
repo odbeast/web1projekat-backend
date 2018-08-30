@@ -37,10 +37,10 @@ namespace RentApp.Models.Entities
         public string Username { get; set; }
         public string SSN { get; set; }
         public string FullName { get; set; }
-        public Gender? Gender { get; set; }
+        public string Gender { get; set; }
         public string ContactNumber { get; set; }
         public string Role { get; set; }
-        public DriveType? DriveType { get; set; }
+        public string DriveType { get; set; }
         public string Email { get; set; }
     }
 }
