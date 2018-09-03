@@ -278,21 +278,9 @@
     <Compile Include="Migrations\201806031439020_Initial.Designer.cs">
       <DependentUpon>201806031439020_Initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201808291001466_updateall.cs" />
-    <Compile Include="Migrations\201808291001466_updateall.Designer.cs">
-      <DependentUpon>201808291001466_updateall.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808291028087_carType.cs" />
-    <Compile Include="Migrations\201808291028087_carType.Designer.cs">
-      <DependentUpon>201808291028087_carType.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808301018199_availabledriver.cs" />
-    <Compile Include="Migrations\201808301018199_availabledriver.Designer.cs">
-      <DependentUpon>201808301018199_availabledriver.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201808301045271_availabledrivernull.cs" />
-    <Compile Include="Migrations\201808301045271_availabledrivernull.Designer.cs">
-      <DependentUpon>201808301045271_availabledrivernull.cs</DependentUpon>
+    <Compile Include="Migrations\201809031553173_updateAll.cs" />
+    <Compile Include="Migrations\201809031553173_updateAll.Designer.cs">
+      <DependentUpon>201809031553173_updateAll.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -393,17 +381,8 @@
     <EmbeddedResource Include="Migrations\201806031439020_Initial.resx">
       <DependentUpon>201806031439020_Initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808291001466_updateall.resx">
-      <DependentUpon>201808291001466_updateall.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808291028087_carType.resx">
-      <DependentUpon>201808291028087_carType.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808301018199_availabledriver.resx">
-      <DependentUpon>201808301018199_availabledriver.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201808301045271_availabledrivernull.resx">
-      <DependentUpon>201808301045271_availabledrivernull.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201809031553173_updateAll.resx">
+      <DependentUpon>201809031553173_updateAll.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
