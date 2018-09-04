@@ -194,6 +194,49 @@ namespace RentApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [Route("AssignDrive/{id}/{driverId}/{adminId}")]
+        [ResponseType(typeof(Drive))]
+        public IHttpActionResult AssignDrive(int id, int driverId, int adminId)
+        {
+            Drive drive = db.Drives
+                          .Where(b => b.Id == id)
+                          .FirstOrDefault();
+
+            if (drive == null)
+            {
+                return NotFound();
+            }
+
+            drive.DriverId = driverId;
+            drive.AdminId = adminId;
+            drive.Status = "Processed";
+
+            Driver user = (Driver)db.AppUsers
+                           .Where(b => b.Id == driverId)
+                           .FirstOrDefault();
+
+            user.Available = false;
+
+            try
+            {
+                db.Entry(user).State = EntityState.Modified;
+                db.Entry(drive).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException)
+            {
+                return BadRequest(ModelState);
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(drive);
+        }
+
+        [HttpGet]
         [Authorize(Roles = "Driver")]
         [Route("ChangePriceDestination/{id}/{price}/{destinationId}")]
         [ResponseType(typeof(Drive))]
