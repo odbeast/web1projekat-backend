@@ -15,7 +15,7 @@ namespace RentApp.Models.Entities
         [Column("Date", TypeName = "datetime2")]
         public DateTime Date { get; set; }        
         public int Grade { get; set; }
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
         public int DriveId { get; set; }
     }
 }

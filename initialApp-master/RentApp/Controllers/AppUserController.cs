@@ -100,5 +100,63 @@ namespace RentApp.Controllers
 
             return Ok(user2change);
         }
+
+        [HttpGet]
+        [Route("GetUserDrives/{username}")]
+        [ResponseType(typeof(Drive))]
+        public IHttpActionResult GetUserDrives(string username)
+        {
+            RAIdentityUser user = db.Users
+                          .Where(b => b.UserName == username)
+                          .FirstOrDefault();
+
+            var drives = db.Drives.Where(d => d.CustomerId == user.AppUserId);
+
+            if (drives == null)
+            {
+                return NotFound();
+            }
+            return Ok(drives);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Customer")]
+        [Route("CancelDrive/{customerId}/{driveId}")]
+        [ResponseType(typeof(Drive))]
+        public IHttpActionResult CancelDrive(int customerId, int driveId)
+        {
+            var drives = db.Drives.Where(b => b.CustomerId == customerId);
+
+
+            if (drives == null)
+            {
+                return NotFound();
+            }
+
+            foreach(Drive d in drives)
+            {
+                if(d.Id == driveId)
+                {
+                    d.Status = "Canceled";
+                    db.Entry(d).State = EntityState.Modified;
+                }
+            }
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException)
+            {
+                return BadRequest(ModelState);
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok();
+        }
+
     }
 }

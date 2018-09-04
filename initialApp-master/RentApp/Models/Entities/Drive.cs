@@ -43,6 +43,9 @@ namespace RentApp.Models.Entities
         [ForeignKey("Driver")]
         public int? DriverId { get; set; }
         public Driver Driver { get; set; }
+        [ForeignKey("Customer")]
+        public int? CustomerId { get; set; }
+        public AppUser Customer { get; set; }
 
     }
 }

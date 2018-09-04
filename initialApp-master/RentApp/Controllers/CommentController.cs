@@ -31,7 +31,7 @@ namespace RentApp.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Driver")]
+        [Authorize(Roles = "Driver, Customer")]
         [ResponseType(typeof(Comment))]
         [Route("AddComment")]
         public IHttpActionResult AddComment()
@@ -53,10 +53,16 @@ namespace RentApp.Controllers
                 return BadRequest(ModelState);
             }
 
+            Drive drive = db.Drives.Where(d => d.Id == comment.DriveId)
+                           .FirstOrDefault();
+
+            drive.CommentId = comment.Id;
+
             db.Comments.Add(comment);
 
             try
             {
+                db.Entry(drive).State = EntityState.Modified;
                 db.SaveChanges();
             }
             catch (DbEntityValidationException)

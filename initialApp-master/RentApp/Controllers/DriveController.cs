@@ -98,7 +98,7 @@ namespace RentApp.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Customer")]
         [ResponseType(typeof(Drive))]
         [Route("AddDrive")]
         public IHttpActionResult AddDrive()
@@ -346,18 +346,35 @@ namespace RentApp.Controllers
         public IHttpActionResult SortByGrade()
         {
             List<int> commentIds = new List<int>();
-            var comments = db.Comments.OrderByDescending(c => c.Grade);
-            foreach (Comment c in comments)
-            {
-                commentIds.Add(c.DriveId);
-            }
-            var drives = db.Drives.Where(d => commentIds.Contains(d.Id));
+            List<int> driveIds = new List<int>();
 
-            if (drives == null)
+
+            var results = from drives in db.Drives
+                          join comments in db.Comments on drives.CommentId equals comments.Id
+                          select new
+                          {
+                              drives.Id,
+                              drives.OriginId,
+                              drives.Price,
+                              drives.Status,
+                              drives.DriverId,
+                              drives.DestinationId,
+                              drives.Date,
+                              drives.CustomerId,
+                              drives.CommentId,
+                              drives.CarType,
+                              drives.AdminId,
+                              comments.Grade
+                          };
+
+            var drivesAll = results.OrderByDescending(o => o.Grade);
+
+
+            if (drivesAll == null)
             {
                 return NotFound();
             }
-            return Ok(drives);
+            return Ok(drivesAll);
         }
     }
 }
