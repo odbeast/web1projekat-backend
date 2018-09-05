@@ -277,8 +277,8 @@ namespace RentApp.Controllers
         public IHttpActionResult SearchByDate(string date1, string date2)
         {
             DateTime t1 = DateTime.Parse(date1);
-            DateTime t2 = DateTime.Parse(date1);
-            var drives = db.Drives.Where(d => DateTime.Compare((d.Date), t1) >= DateTime.Compare((d.Date), t2));
+            DateTime t2 = DateTime.Parse(date2);
+            var drives = db.Drives.Where(d => DateTime.Compare((d.Date), t1) > DateTime.Compare((d.Date), t2));
 
             if (drives == null)
             {
